@@ -91,7 +91,6 @@
             });
             socket.on('chat message', function(msg) {
                 blinkTab("New message");
-                document.title = "Anonymous conversation";
                 $('#messages').append($('<li>').text(msg.user + msg.message));
             });
         });
