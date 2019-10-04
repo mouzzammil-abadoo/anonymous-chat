@@ -57,21 +57,36 @@
 <body>
     <ul id="messages"></ul>
     <form action="">
-        <input id="mesaz" autocomplete="off" />
+        <input type="text" placeholder="Enter a name here">
+        <input id="mesaz" autocomplete="off" placeholder="Enter new message" />
         <button>Send</button>
     </form>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
-        $(function () {
+        $(document).ready(function() {
+            $(':button').prop('disabled', true);
+            $('input[type="text"]').keyup(function() {
+                if ($(this).val() != '') {
+                    $(':button').prop('disabled', false);
+                }
+            });
+            $(':button').click(function() {
+                if ($("input:text").val() != '') {
+                    $('input[type="text"]').prop('disabled', true);
+                }
+            });
+        });
+        $(function() {
             var socket = io();
-            $('form').submit(function () {
+            $('form').submit(function() {
                 socket.emit('chat message', $('#mesaz').val());
                 $('#mesaz').val('');
                 return false;
             });
-            socket.on('chat message', function (msg) {
-                $('#messages').append($('<li>').text(msg));
+            socket.on('chat message', function(msg) {
+                $('#messages').append($('<li>').text($("input:text").val() + " : " + msg));
             });
         });
     </script>
