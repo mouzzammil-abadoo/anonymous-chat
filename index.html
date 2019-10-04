@@ -94,24 +94,22 @@
                 $('#messages').append($('<li>').text(msg.user + msg.message));
             });
         });
+
         var blinkTab = function(message) {
-            var oldTitle = document.title,
-                /* save original title */
-                timeoutId,
+            var timeoutId,
                 blink = function() {
-                    document.title = document.title == message ? ' ' : message;
+                    document.title = document.title == message ? 'Anonymous conversation' : message;
                 },
-                /* function to BLINK browser tab */
-                clear = function() { /* function to set title back to original */
+                clear = function() {
                     clearInterval(timeoutId);
-                    document.title = oldTitle;
+                    document.title = 'Anonymous conversation';
                     window.onmousemove = null;
                     timeoutId = null;
                 };
 
             if (!timeoutId) {
                 timeoutId = setInterval(blink, 1000);
-                window.onmousemove = clear; /* stop changing title on moving the mouse */
+                window.onmousemove = clear;
             }
         };
     </script>
