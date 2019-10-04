@@ -42,6 +42,7 @@
             list-style-type: none;
             margin: 0;
             padding: 0;
+            overflow: scroll;
         }
         
         #messages li {
@@ -89,9 +90,31 @@
                 return false;
             });
             socket.on('chat message', function(msg) {
+                blinkTab("New message");
+                document.title = "Anonymous conversation";
                 $('#messages').append($('<li>').text(msg.user + msg.message));
             });
         });
+        var blinkTab = function(message) {
+            var oldTitle = document.title,
+                /* save original title */
+                timeoutId,
+                blink = function() {
+                    document.title = document.title == message ? ' ' : message;
+                },
+                /* function to BLINK browser tab */
+                clear = function() { /* function to set title back to original */
+                    clearInterval(timeoutId);
+                    document.title = oldTitle;
+                    window.onmousemove = null;
+                    timeoutId = null;
+                };
+
+            if (!timeoutId) {
+                timeoutId = setInterval(blink, 1000);
+                window.onmousemove = clear; /* stop changing title on moving the mouse */
+            }
+        };
     </script>
 </body>
 
